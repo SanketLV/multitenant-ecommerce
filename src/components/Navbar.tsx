@@ -75,13 +75,17 @@ const Navbar = () => {
           variant="secondary"
           className="border-0 border-l px-12 h-full rounded-none bg-white hover:bg-pink-400 transition-colors ease-in-out duration-300 text-lg"
         >
-          <Link href="/sign-in">Log in</Link>
+          <Link prefetch href="/sign-in">
+            Log in
+          </Link>
         </Button>
         <Button
           asChild
           className="border-0 border-l px-12 h-full rounded-none bg-black text-white hover:bg-pink-400 hover:text-black transition-colors ease-in-out duration-300 text-lg"
         >
-          <Link href="/sign-up">Start selling</Link>
+          <Link prefetch href="/sign-up">
+            Start selling
+          </Link>
         </Button>
       </div>
 
