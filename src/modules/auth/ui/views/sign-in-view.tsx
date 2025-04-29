@@ -27,7 +27,7 @@ const poppins = Poppins({
   weight: ["700"],
 });
 
-export const SignIpView = () => {
+export const SignInView = () => {
   const router = useRouter();
 
   const trpc = useTRPC();
