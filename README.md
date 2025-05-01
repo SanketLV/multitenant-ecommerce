@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Multi-tenant E-commerce Platform
+
+A modern, scalable multi-tenant e-commerce platform built with Next.js 14, PayloadCMS, and tRPC. This platform allows creators and businesses to sell digital products across various categories.
+
+## Technologies Used
+
+- **Frontend:**
+
+  - Next.js 14 (App Router)
+  - React
+  - Tailwind CSS
+  - shadcn/ui Components
+  - TypeScript
+
+- **Backend:**
+
+  - PayloadCMS (Headless CMS)
+  - MongoDB (via Mongoose adapter)
+  - tRPC for type-safe API calls
+
+- **Authentication & Authorization:**
+  - Built-in authentication system via PayloadCMS
+  - Role-based access control
+
+## Features
+
+- 🛍️ Multi-tenant marketplace
+- 📱 Responsive design
+- 🔍 Advanced category-based search and filtering
+- 🔐 User authentication and authorization
+- 📊 Admin dashboard (powered by PayloadCMS)
+- 🔄 Type-safe API calls with tRPC
+- 🎨 Customizable UI with Tailwind CSS
+- 🖼️ Media management with image optimization
+- 📁 Hierarchical category management
+
+## Prerequisites
+
+Before running this project, make sure you have:
+
+- Node.js 18+ installed
+- MongoDB instance running
+- Environment variables set up (see below)
+
+## Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```env
+DATABASE_URI=your_mongodb_uri
+PAYLOAD_SECRET=your_secret_key
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+```
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Install dependencies:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Start the development server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
+5. Access the admin panel at [http://localhost:3000/admin](http://localhost:3000/admin)
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/src/app` - Next.js app router pages and layouts
+- `/src/collections` - PayloadCMS collection definitions
+- `/src/components` - Reusable React components
+- `/src/lib` - Utility functions and shared code
+- `/src/modules` - Feature-based modules (auth, categories, etc.)
+- `/src/trpc` - tRPC router and procedure definitions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database Collections
 
-## Deploy on Vercel
+- **Users** - User management and authentication
+- **Categories** - Hierarchical category system with subcategories
+- **Media** - Media assets management with image optimization
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## API Routes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- REST API: `/api/[collection]`
+- tRPC: `/api/trpc`
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
