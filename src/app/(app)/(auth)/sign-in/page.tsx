@@ -9,7 +9,7 @@ const SignIn = async () => {
   if (session.user) {
     redirect("/");
   }
-
+  
   return <SignInView />;
 };
 
