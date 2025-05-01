@@ -8,6 +8,8 @@ import { Button } from "./ui/button";
 import { usePathname } from "next/navigation";
 import NavbarSidebar from "@/app/(app)/(home)/navbar-sidebar";
 import { MenuIcon } from "lucide-react";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -47,6 +49,9 @@ const Navbar = () => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const trpc = useTRPC();
+  const session = useQuery(trpc.auth.session.queryOptions());
+
   return (
     <nav className="h-20 flex border-b justify-between font-medium bg-white">
       {/* Logo */}
@@ -69,25 +74,36 @@ const Navbar = () => {
         ))}
       </div>
 
-      <div className="hidden lg:flex">
-        <Button
-          asChild
-          variant="secondary"
-          className="border-0 border-l px-12 h-full rounded-none bg-white hover:bg-pink-400 transition-colors ease-in-out duration-300 text-lg"
-        >
-          <Link prefetch href="/sign-in">
-            Log in
-          </Link>
-        </Button>
-        <Button
-          asChild
-          className="border-0 border-l px-12 h-full rounded-none bg-black text-white hover:bg-pink-400 hover:text-black transition-colors ease-in-out duration-300 text-lg"
-        >
-          <Link prefetch href="/sign-up">
-            Start selling
-          </Link>
-        </Button>
-      </div>
+      {session.data?.user ? (
+        <div className="hidden lg:flex">
+          <Button
+            asChild
+            className="border-0 border-l px-12 h-full rounded-none bg-black text-white hover:bg-pink-400 hover:text-black transition-colors ease-in-out duration-300 text-lg"
+          >
+            <Link href="/admin">Dashboard</Link>
+          </Button>
+        </div>
+      ) : (
+        <div className="hidden lg:flex">
+          <Button
+            asChild
+            variant="secondary"
+            className="border-0 border-l px-12 h-full rounded-none bg-white hover:bg-pink-400 transition-colors ease-in-out duration-300 text-lg"
+          >
+            <Link prefetch href="/sign-in">
+              Log in
+            </Link>
+          </Button>
+          <Button
+            asChild
+            className="border-0 border-l px-12 h-full rounded-none bg-black text-white hover:bg-pink-400 hover:text-black transition-colors ease-in-out duration-300 text-lg"
+          >
+            <Link prefetch href="/sign-up">
+              Start selling
+            </Link>
+          </Button>
+        </div>
+      )}
 
       <NavbarSidebar
         items={navbarItems}
