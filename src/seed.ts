@@ -137,30 +137,90 @@ const categories = [
   },
 ];
 
+// const seed = async () => {
+//   const payload = await getPayload({ config });
+
+//   for (const category of categories) {
+//     const parentCategory = await payload.create({
+//       collection: "categories",
+//       data: {
+//         name: category.name,
+//         slug: category.slug,
+//         color: category.color,
+//         parent: null,
+//       },
+//     });
+
+//     for (const subCategory of category.subcategories || []) {
+//       await payload.create({
+//         collection: "categories",
+//         data: {
+//           name: subCategory.name,
+//           slug: subCategory.slug,
+//           parent: parentCategory.id,
+//         },
+//       });
+//     }
+//   }
+// };
+
 const seed = async () => {
   const payload = await getPayload({ config });
 
-  for (const category of categories) {
-    const parentCategory = await payload.create({
+  try {
+    // First, check if categories already exist and delete them
+    console.log("Checking for existing categories...");
+    const existingCategories = await payload.find({
       collection: "categories",
-      data: {
-        name: category.name,
-        slug: category.slug,
-        color: category.color,
-        parent: null,
-      },
+      limit: 1000, // Set a high limit to get all categories
     });
 
-    for (const subCategory of category.subcategories || []) {
-      await payload.create({
+    if (existingCategories.docs.length > 0) {
+      console.log(
+        `Found ${existingCategories.docs.length} existing categories. Clearing them...`
+      );
+
+      // Delete all categories one by one
+      for (const category of existingCategories.docs) {
+        await payload.delete({
+          collection: "categories",
+          id: category.id,
+        });
+      }
+      console.log("All existing categories have been removed.");
+    } else {
+      console.log("No existing categories found. Proceeding with seeding.");
+    }
+
+    // Now proceed with creating new categories
+    console.log("Creating new categories...");
+    for (const category of categories) {
+      const parentCategory = await payload.create({
         collection: "categories",
         data: {
-          name: subCategory.name,
-          slug: subCategory.slug,
-          parent: parentCategory.id,
+          name: category.name,
+          slug: category.slug,
+          color: category.color,
+          parent: null,
         },
       });
+
+      for (const subCategory of category.subcategories || []) {
+        await payload.create({
+          collection: "categories",
+          data: {
+            name: subCategory.name,
+            slug: subCategory.slug,
+            parent: parentCategory.id,
+          },
+        });
+      }
     }
+
+    console.log("Seeding completed Successfully");
+  } catch (error) {
+    console.error("Error during seeding:", error);
+    throw error;
   }
 };
 
