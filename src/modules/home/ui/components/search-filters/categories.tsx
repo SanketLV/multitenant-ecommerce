@@ -8,8 +8,11 @@ import { ListFilterIcon } from "lucide-react";
 import CategoriesSidebar from "./categories-sidebar";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 
 const Categories = () => {
+  const params = useParams();
+
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
 
@@ -21,7 +24,8 @@ const Categories = () => {
   const [isAnyHovered, setIsAnyHovered] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const activeCategory = "all";
+  const categoryParam = params.category as string | undefined;
+  const activeCategory = categoryParam || "all";
 
   const activeCategoryIndex = data.findIndex(
     (cat) => cat.slug === activeCategory
@@ -103,8 +107,9 @@ const Categories = () => {
           </div>
         ))}
 
-        <div ref={viewAllRef}>
+        <div ref={viewAllRef} className="shrink-0">
           <Button
+            variant="elevated"
             className={cn(
               "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
               isActiveCategoryHidden &&
