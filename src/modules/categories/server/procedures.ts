@@ -21,7 +21,7 @@ export const categoriesRouter = createTRPCRouter({
         (subcategory) => ({
           // Because of "depth: 1" we are confident "subcategory" will be a type of "Category"
           ...(subcategory as Category),
-          subcategories: undefined, // Remove subcategories from subcategories node
+          // subcategories: undefined, // Remove subcategories from subcategories node
         })
       ),
     }));

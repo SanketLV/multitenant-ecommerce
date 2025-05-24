@@ -10,7 +10,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { CategoriesGetManyOutput, Category } from "@/modules/categories/types";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 interface CategoriesSidebarProps {
   isOpen: boolean;
@@ -26,9 +26,8 @@ const CategoriesSidebar = ({
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
 
-  const [parentCategories, setParentCategories] = useState<Category[] | null>(
-    null
-  );
+  const [parentCategories, setParentCategories] =
+    useState<CategoriesGetManyOutput | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<
     CategoriesGetManyOutput[1] | null
   >(null);
@@ -42,10 +41,10 @@ const CategoriesSidebar = ({
     onOpenChange(open);
   };
 
-  const handleCategoryClick = (category: Category) => {
+  const handleCategoryClick = (category: CategoriesGetManyOutput[1]) => {
     if (category.subcategories && category.subcategories.length > 0) {
-      setParentCategories(category.subcategories);
-      setSelectedCategory(category as CategoriesGetManyOutput[1]);
+      setParentCategories(category.subcategories as CategoriesGetManyOutput);
+      setSelectedCategory(category);
     } else {
       // this is a leaf category (no subcategories)
       if (parentCategories && selectedCategory) {
@@ -96,7 +95,9 @@ const CategoriesSidebar = ({
           {currentCategories.map((category) => (
             <button
               key={category.slug}
-              onClick={() => handleCategoryClick(category as Category)}
+              onClick={() =>
+                handleCategoryClick(category as CategoriesGetManyOutput[1])
+              }
               className="w-full text-left p-4 hover:bg-black hover:text-white flex justify-between items-center text-base font-medium cursor-pointer"
             >
               {category.name}
