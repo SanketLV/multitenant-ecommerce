@@ -5,13 +5,9 @@ import { useProductFilters } from "../../hooks/use-product-filters";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const ProductSort = () => {
-  const [filters, setFilters] = useProductFilters();
-
-  return (
 const sortOptions = [
-  { value: "curated",     label: "Curated" },
-  { value: "trending",    label: "Trending" },
+  { value: "curated", label: "Curated" },
+  { value: "trending", label: "Trending" },
   { value: "hot_and_new", label: "Hot & New" },
 ] as const;
 
@@ -36,8 +32,6 @@ const ProductSort = () => {
         </Button>
       ))}
     </div>
-  );
-};
   );
 };
 
