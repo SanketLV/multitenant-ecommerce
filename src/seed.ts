@@ -174,6 +174,10 @@ const seed = async () => {
       collection: "categories",
       limit: 1000, // Set a high limit to get all categories
     });
+    const existingUsers = await payload.find({
+      collection: "users",
+      limit: 1000, // Set a high limit to get all users
+    });
 
     if (existingCategories.docs.length > 0) {
       console.log(
@@ -191,6 +195,34 @@ const seed = async () => {
     } else {
       console.log("No existing categories found. Proceeding with seeding.");
     }
+
+    if (existingUsers.docs.length > 0) {
+      console.log(
+        `Found ${existingUsers.docs.length} existing Users. Clearing them...`
+      );
+
+      // Delete all categories one by one
+      for (const user of existingUsers.docs) {
+        await payload.delete({
+          collection: "users",
+          id: user.id,
+        });
+      }
+      console.log("All existing users have been removed.");
+    } else {
+      console.log("No existing users found. Proceeding with seeding.");
+    }
+
+    // Create Admin User
+    await payload.create({
+      collection: "users",
+      data: {
+        email: "admin@demo.com",
+        password: "demo",
+        roles: ["super-admin"],
+        username: "admin",
+      },
+    });
 
     // Now proceed with creating new categories
     console.log("Creating new categories...");
